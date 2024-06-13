@@ -2,17 +2,26 @@ from django.contrib.auth.models import User
 from django.test import TestCase
 from rest_framework import status
 from rest_framework.test import APIClient
+from rest_framework_simplejwt.tokens import RefreshToken
 
-from .models import Cart, CartItem, Option, OptionList, Order, Product
+from orders.models import Cart, CartItem, Option, OptionList, Order, Product
 
 
-class ProductTests(TestCase):
+class AuthenticatedTestCase(TestCase):
     def setUp(self):
         self.user = User.objects.create_user(
             username="testuser", password="testpass"
         )
         self.client = APIClient()
-        self.client.login(username="testuser", password="testpass")
+        self.refresh = RefreshToken.for_user(self.user)
+        self.client.credentials(
+            HTTP_AUTHORIZATION=f"Bearer {self.refresh.access_token}"
+        )
+
+
+class ProductTests(AuthenticatedTestCase):
+    def setUp(self):
+        super().setUp()
         self.product = Product.objects.create(
             name="Chicken Biryani", base_price=10.00
         )
@@ -59,8 +68,9 @@ class ProductTests(TestCase):
         self.assertEqual(Order.objects.count(), 1)
 
 
-class OptionTests(TestCase):
+class OptionTests(AuthenticatedTestCase):
     def setUp(self):
+        super().setUp()
         self.product = Product.objects.create(
             name="Chicken Biryani", base_price=10.00
         )
@@ -78,11 +88,9 @@ class OptionTests(TestCase):
         self.assertEqual(option_count, 1)
 
 
-class CartTests(TestCase):
+class CartTests(AuthenticatedTestCase):
     def setUp(self):
-        self.user = User.objects.create_user(
-            username="testuser", password="testpass"
-        )
+        super().setUp()
         self.product = Product.objects.create(
             name="Chicken Biryani", base_price=10.00
         )
@@ -108,11 +116,9 @@ class CartTests(TestCase):
         self.assertEqual(CartItem.objects.count(), 1)
 
 
-class OrderTests(TestCase):
+class OrderTests(AuthenticatedTestCase):
     def setUp(self):
-        self.user = User.objects.create_user(
-            username="testuser", password="testpass"
-        )
+        super().setUp()
         self.product = Product.objects.create(
             name="Chicken Biryani", base_price=10.00
         )

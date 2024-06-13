@@ -1,5 +1,5 @@
 from django.contrib.auth.models import User
-from drf_spectacular.utils import extend_schema, extend_schema_view
+from drf_spectacular.utils import extend_schema
 from rest_framework import permissions, viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
@@ -14,32 +14,12 @@ from orders.serializers import (
 )
 
 
-@extend_schema_view(
-    list=extend_schema(summary="List all products", tags=["products"]),
-    create=extend_schema(summary="Create a product", tags=["products"]),
-    retrieve=extend_schema(summary="Retrieve a product", tags=["products"]),
-    update=extend_schema(summary="Update a product", tags=["products"]),
-    partial_update=extend_schema(
-        summary="Partially update a product", tags=["products"]
-    ),
-    destroy=extend_schema(summary="Delete a product", tags=["products"]),
-)
 class ProductViewSet(viewsets.ModelViewSet):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
     permission_classes = [permissions.IsAuthenticated]
 
 
-@extend_schema_view(
-    list=extend_schema(summary="List all cart items", tags=["cart"]),
-    create=extend_schema(summary="Create a cart item", tags=["cart"]),
-    retrieve=extend_schema(summary="Retrieve a cart item", tags=["cart"]),
-    update=extend_schema(summary="Update a cart item", tags=["cart"]),
-    partial_update=extend_schema(
-        summary="Partially update a cart item", tags=["cart"]
-    ),
-    destroy=extend_schema(summary="Delete a cart item", tags=["cart"]),
-)
 class CartViewSet(viewsets.ModelViewSet):
     queryset = Cart.objects.all()
     serializer_class = CartSerializer
@@ -68,16 +48,6 @@ class CartViewSet(viewsets.ModelViewSet):
         return Response(CartItemSerializer(cart_item).data)
 
 
-@extend_schema_view(
-    list=extend_schema(summary="List all orders", tags=["orders"]),
-    create=extend_schema(summary="Create an order", tags=["orders"]),
-    retrieve=extend_schema(summary="Retrieve an order", tags=["orders"]),
-    update=extend_schema(summary="Update an order", tags=["orders"]),
-    partial_update=extend_schema(
-        summary="Partially update an order", tags=["orders"]
-    ),
-    destroy=extend_schema(summary="Delete an order", tags=["orders"]),
-)
 class OrderViewSet(viewsets.ModelViewSet):
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
@@ -106,16 +76,6 @@ class OrderViewSet(viewsets.ModelViewSet):
         )
 
 
-@extend_schema_view(
-    list=extend_schema(summary="List all users", tags=["users"]),
-    create=extend_schema(summary="Create a user", tags=["users"]),
-    retrieve=extend_schema(summary="Retrieve a user", tags=["users"]),
-    update=extend_schema(summary="Update a user", tags=["users"]),
-    partial_update=extend_schema(
-        summary="Partially update a user", tags=["users"]
-    ),
-    destroy=extend_schema(summary="Delete a user", tags=["users"]),
-)
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
