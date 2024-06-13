@@ -1,5 +1,19 @@
 version: "3"
 tasks:
+  default:
+    desc: Show help
+    silent: true
+    cmds:
+      - task --list
+  migrate:
+    desc: Apply migrations
+    cmds:
+      - pipenv run python manage.py makemigrations
+      - pipenv run python manage.py migrate
+  start:
+    desc: Start the development server
+    cmds:
+      - pipenv run python manage.py runserver 9000
   startapp:
     desc: Create a new app
     cmds:
