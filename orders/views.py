@@ -1,6 +1,6 @@
 from django.contrib.auth.models import User
 from drf_spectacular.utils import extend_schema
-from rest_framework import permissions, viewsets
+from rest_framework import permissions, status, viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
@@ -14,10 +14,13 @@ from orders.serializers import (
 )
 
 
-class ProductViewSet(viewsets.ModelViewSet):
+class ProductViewSet(
+    viewsets.GenericViewSet,
+    viewsets.mixins.ListModelMixin,
+    viewsets.mixins.RetrieveModelMixin,
+):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
-    permission_classes = [permissions.IsAuthenticated]
 
 
 class CartViewSet(viewsets.ModelViewSet):
@@ -76,7 +79,23 @@ class OrderViewSet(viewsets.ModelViewSet):
         )
 
 
-class UserViewSet(viewsets.ModelViewSet):
+class UserViewSet(viewsets.GenericViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = [permissions.IsAuthenticated]
+
+    @action(detail=False, methods=["post"])
+    def me(self, request):
+        return Response(UserSerializer(request.user).data)
+
+    @action(detail=False, methods=["post"])
+    def add_user(self, request):
+        password = request.data.pop(
+            "password", User.objects.make_random_password(length=8)
+        )
+        serializer = UserSerializer(
+            data={**request.data, "password": password},
+        )
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(status=status.HTTP_201_CREATED)
