@@ -1,13 +1,9 @@
 import type { Metadata } from "next";
-import { Prata } from "next/font/google";
+import { Inter } from "next/font/google";
 import "./globals.css";
 import Provider from "./provider";
 
-const prata = Prata({
-  weight: "400",
-  subsets: ["latin"],
-  display: "swap",
-});
+const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Order Eats",
@@ -20,8 +16,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={prata.className}>
+    <html lang="en" className="flex flex-col w-full h-full">
+      <body className={inter.className}>
         <Provider>{children}</Provider>
       </body>
     </html>

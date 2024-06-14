@@ -7,7 +7,11 @@ import { createContext, useContext, useEffect, useState } from "react";
 interface AuthContextProps {
   isAuthenticated: boolean;
   login: (username: string, password: string) => Promise<void>;
-  register: (username: string, password: string) => Promise<void>;
+  register: (
+    email: string,
+    username: string,
+    password: string
+  ) => Promise<void>;
   logout: () => void;
   user: string | null;
 }
@@ -36,9 +40,13 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     router.push("/");
   };
 
-  const register = async (username: string, password: string) => {
-    await apiRegister(username, password);
-    await login(username, password);
+  const register = async (
+    email: string,
+    username: string,
+    password: string
+  ) => {
+    await apiRegister(email, username, password);
+    router.push("/login");
   };
 
   const logout = () => {
