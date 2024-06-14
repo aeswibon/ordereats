@@ -1,5 +1,4 @@
 import NavBar from "@c/Common/Navbar";
-import { Container } from "@mui/material";
 import { AuthProvider } from "@u/context/Auth";
 import { CartProvider } from "@u/context/Cart";
 import React from "react";
@@ -9,7 +8,7 @@ const Provider = ({ children }: { children: React.ReactNode }) => {
     <AuthProvider>
       <CartProvider>
         <NavBar />
-        <Container>{children}</Container>
+        {children}
       </CartProvider>
     </AuthProvider>
   );
