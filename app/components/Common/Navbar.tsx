@@ -40,7 +40,7 @@ const NavBar = () => {
       </Link>
       <nav className="ml-auto flex gap-4 sm:gap-6 items-center">
         <Link
-          href="/#"
+          href="/product"
           className="text-sm font-medium hover:underline underline-offset-4"
           prefetch={false}
         >

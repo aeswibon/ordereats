@@ -1,4 +1,5 @@
 import api from "@u/services/api";
+import { Response } from "@u/types";
 
 interface LoginResponse {
   token: string;
@@ -17,6 +18,11 @@ export const register = async (
   email: string,
   username: string,
   password: string
-): Promise<void> => {
-  await api.post("/users/add_user/", { email, username, password });
+): Promise<Response<void>> => {
+  const response = await api.post("/users/add_user/", {
+    email,
+    username,
+    password,
+  });
+  return { status: response.status, data: undefined };
 };

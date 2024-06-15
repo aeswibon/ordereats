@@ -2,10 +2,10 @@
 
 import { Button, ListItem, ListItemText } from "@mui/material";
 import { useCart } from "@u/context/Cart";
-import { CartItem } from "@u/types";
+import { ICartItem } from "@u/types";
 
 interface CartItemProps {
-  item: CartItem;
+  item: ICartItem;
 }
 
 const CartItemComponent: React.FC<CartItemProps> = ({ item }) => {
