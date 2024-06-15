@@ -10,7 +10,7 @@ djangorestframework = "*"
 drf-spectacular = "*"
 djangorestframework-simplejwt = "*"
 django = {version = "*", extras = ["bcrypt"]}
-environ = "*"
+django-environ = "*"
 
 [dev-packages]
 

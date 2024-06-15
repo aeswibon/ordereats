@@ -10,8 +10,11 @@ from rest_framework_simplejwt.views import (
     TokenRefreshView,
 )
 
+from ordereats.views import ping
+
 urlpatterns = [
     path("admin/", admin.site.urls),
+    path("ping/", ping, name="ping"),
     path("api/v1/", include("orders.urls")),
     path(
         "api/v1/token/",
