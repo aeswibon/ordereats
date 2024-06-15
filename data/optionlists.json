@@ -1,0 +1,38 @@
+[
+  {
+    "model": "orders.optionlist",
+    "pk": 1,
+    "fields": {
+      "name": "Spicy",
+      "selection_type": "must_select_one",
+      "product_id": 1
+    }
+  },
+  {
+    "model": "orders.optionlist",
+    "pk": 2,
+    "fields": {
+      "name": "Addon",
+      "selection_type": "can_select_multiple_or_none",
+      "product_id": 1
+    }
+  },
+  {
+    "model": "orders.optionlist",
+    "pk": 3,
+    "fields": {
+      "name": "Addon",
+      "selection_type": "can_select_multiple_or_none",
+      "product_id": 2
+    }
+  },
+  {
+    "model": "orders.optionlist",
+    "pk": 4,
+    "fields": {
+      "name": "Patty",
+      "selection_type": "must_select_one",
+      "product_id": 3
+    }
+  }
+]

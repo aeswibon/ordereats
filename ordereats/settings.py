@@ -19,7 +19,7 @@ SECRET_KEY = (
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['ordereats.onrender.com']
+ALLOWED_HOSTS = ["ordereats.onrender.com", "localhost"]
 
 
 # Application definition
@@ -50,6 +50,7 @@ MIDDLEWARE = [
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
+    "https://ordereats.onrender.com",
 ]
 
 ROOT_URLCONF = "ordereats.urls"

@@ -1,0 +1,74 @@
+[
+  {
+    "model": "orders.option",
+    "pk": 1,
+    "fields": {
+      "name": "High",
+      "surcharge": 50,
+      "option_list_id": 1
+    }
+  },
+  {
+    "model": "orders.option",
+    "pk": 2,
+    "fields": {
+      "name": "Extra Hot",
+      "surcharge": 90,
+      "option_list_id": 1
+    }
+  },
+  {
+    "model": "orders.option",
+    "pk": 3,
+    "fields": {
+      "name": "Sauce",
+      "surcharge": 10,
+      "option_list_id": 2
+    }
+  },
+  {
+    "model": "orders.option",
+    "pk": 4,
+    "fields": {
+      "name": "Mayonnaise",
+      "surcharge": 22,
+      "option_list_id": 3
+    }
+  },
+  {
+    "model": "orders.option",
+    "pk": 5,
+    "fields": {
+      "name": "Paneer",
+      "surcharge": 37,
+      "option_list_id": 3
+    }
+  },
+  {
+    "model": "orders.option",
+    "pk": 6,
+    "fields": {
+      "name": "Beef",
+      "surcharge": 39,
+      "option_list_id": 4
+    }
+  },
+  {
+    "model": "orders.option",
+    "pk": 7,
+    "fields": {
+      "name": "Turkey",
+      "surcharge": 57,
+      "option_list_id": 4
+    }
+  },
+  {
+    "model": "orders.option",
+    "pk": 8,
+    "fields": {
+      "name": "Veggie",
+      "surcharge": 23,
+      "option_list_id": 4
+    }
+  }
+]

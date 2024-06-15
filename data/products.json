@@ -1,0 +1,32 @@
+[
+  {
+    "model": "orders.product",
+    "pk": 1,
+    "fields": {
+      "name": "Chicken Briyani",
+      "base_price": 100,
+      "description": "Chicken Biryani is a savory chicken and rice dish including layers of chicken, rice, and aromatics that are steamed together.",
+      "image": "https://images.pexels.com/photos/20642812/pexels-photo-20642812/free-photo-of-rice-with-chicken.jpeg?auto=compress&cs=tinysrgb&w=600"
+    }
+  },
+  {
+    "model": "orders.product",
+    "pk": 2,
+    "fields": {
+      "name": "Classic Pepperoni Pizza",
+      "base_price": 50,
+      "description": "Freshly baked pizza with pepperoni, mozzarella, and our signature tomato sauce.",
+      "image": "https://images.pexels.com/photos/2619970/pexels-photo-2619970.jpeg?auto=compress&cs=tinysrgb&w=600"
+    }
+  },
+  {
+    "model": "orders.product",
+    "pk": 3,
+    "fields": {
+      "name": "Gourmet Burger",
+      "base_price": 30,
+      "description": "Juicy beef patty, cheddar cheese, lettuce, tomato, and our signature sauce.",
+      "image": "https://images.pexels.com/photos/4392634/pexels-photo-4392634.jpeg?auto=compress&cs=tinysrgb&w=600"
+    }
+  }
+]

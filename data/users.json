@@ -1,0 +1,18 @@
+[
+  {
+    "model": "auth.user",
+    "pk": 1,
+    "fields": {
+      "password": "bcrypt_sha256$$2b$12$MreXCOvX5lP3O956yDVoUuVXLwCGKTHt8OO2TtRzyhAIyfJ8ARUBq",
+      "last_login": "2024-06-15 10:01:09.557055+05:30",
+      "is_superuser": true,
+      "first_name": "",
+      "last_name": "",
+      "email": "admin@gmail.com",
+      "is_staff": true,
+      "is_active": true,
+      "date_joined": "2024-06-13 19:18:41.845948+05:30",
+      "username": "admin"
+    }
+  }
+]
