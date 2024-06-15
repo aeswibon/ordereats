@@ -109,19 +109,32 @@ const ProductCard = (props: ProductCardProps) => {
             </div>
           ))}
         </div>
-        <div className="flex items-center gap-2 pb-4">
-          <span className="block font-medium mb-2">Quantity:</span>
-          <input
-            type="number"
-            min="1"
-            value={quantity}
-            onChange={(e) => setQuantity(parseInt(e.target.value))}
-            className="w-12 h-8 border border-gray-300 rounded-md pl-2"
-          />
-        </div>
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger>
+              <div className="grid grid-cols-5 w-full max-w-sm justify-center items-center gap-4 mb-4">
+                <Button
+                  variant="outline"
+                  size="lg"
+                  className="w-full py-2"
+                  disabled={!isAuthenticated}
+                  onClick={() => setQuantity((prev) => Math.max(1, prev - 1))}
+                >
+                  -
+                </Button>
+                <span className="inline-flex justify-center items-center col-span-3 h-full text-center border border-gray-300 rounded-md">
+                  {quantity}
+                </span>
+                <Button
+                  variant="outline"
+                  size="lg"
+                  className="w-full py-2"
+                  disabled={!isAuthenticated}
+                  onClick={() => setQuantity((prev) => prev + 1)}
+                >
+                  +
+                </Button>
+              </div>
               <Button
                 onClick={() => mutation.mutate()}
                 size="lg"

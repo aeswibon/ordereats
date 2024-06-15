@@ -60,6 +60,8 @@ class OrderSerializer(serializers.ModelSerializer):
             "items",
             "total_price",
             "tax",
+            "service_fee",
+            "tip",
             "created_at",
         ]
 

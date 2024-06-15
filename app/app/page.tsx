@@ -11,7 +11,7 @@ const Home = () => {
         <section className="w-full py-12 md:py-24 lg:py-32">
           <div className="container grid gap-6 px-4 md:px-6 lg:grid-cols-2 lg:gap-12">
             <Image
-              src="/placeholder.svg"
+              src="https://images.pexels.com/photos/260922/pexels-photo-260922.jpeg?auto=compress&cs=tinysrgb&w=600"
               width="550"
               height="550"
               alt="Restaurant Interior"
@@ -20,7 +20,7 @@ const Home = () => {
             <div className="flex flex-col justify-center space-y-4">
               <div className="space-y-2">
                 <h1 className="text-3xl font-bold tracking-tighter sm:text-5xl xl:text-6xl/none">
-                  Discover the Flavors of Acme Restaurant
+                  Discover the Flavors of Restaurant
                 </h1>
                 <p className="max-w-[600px] text-gray-500 md:text-xl dark:text-gray-400">
                   Experience our award-winning cuisine in a warm and inviting
@@ -69,7 +69,7 @@ const Home = () => {
             <div className="mx-auto grid max-w-5xl grid-cols-1 gap-6 py-12 sm:grid-cols-2 md:gap-12 lg:grid-cols-3">
               <div className="rounded-xl bg-white p-4 shadow-sm transition-all hover:scale-105 hover:shadow-md dark:bg-gray-950">
                 <Image
-                  src="/placeholder.svg"
+                  src="https://images.pexels.com/photos/725991/pexels-photo-725991.jpeg?auto=compress&cs=tinysrgb&w=600"
                   width="550"
                   height="310"
                   alt="Dish"
@@ -85,7 +85,7 @@ const Home = () => {
               </div>
               <div className="rounded-xl bg-white p-4 shadow-sm transition-all hover:scale-105 hover:shadow-md dark:bg-gray-950">
                 <Image
-                  src="/placeholder.svg"
+                  src="https://images.pexels.com/photos/1307658/pexels-photo-1307658.jpeg?auto=compress&cs=tinysrgb&w=600"
                   width="550"
                   height="310"
                   alt="Dish"
@@ -101,7 +101,7 @@ const Home = () => {
               </div>
               <div className="rounded-xl bg-white p-4 shadow-sm transition-all hover:scale-105 hover:shadow-md dark:bg-gray-950">
                 <Image
-                  src="/placeholder.svg"
+                  src="https://images.pexels.com/photos/921362/pexels-photo-921362.jpeg?auto=compress&cs=tinysrgb&w=600"
                   width="550"
                   height="310"
                   alt="Dish"
@@ -126,7 +126,7 @@ const Home = () => {
                   About Us
                 </div>
                 <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">
-                  Discover the Story Behind Acme Restaurant
+                  Discover the Story Behind the Restaurant
                 </h2>
                 <p className="max-w-[600px] text-gray-500 md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed dark:text-gray-400">
                   Acme Restaurant was founded in 2010 by Chef Emily Nguyen, a
@@ -154,7 +154,7 @@ const Home = () => {
               </div>
             </div>
             <Image
-              src="/placeholder.svg"
+              src="https://images.pexels.com/photos/1267320/pexels-photo-1267320.jpeg?auto=compress&cs=tinysrgb&w=600"
               width="550"
               height="550"
               alt="Chef"
@@ -191,7 +191,7 @@ const Home = () => {
             </div>
             <div className="space-y-4">
               <div className="grid gap-1">
-                <h3 className="text-xl font-bold">Acme Restaurant</h3>
+                <h3 className="text-xl font-bold">Elevate Restaurant</h3>
                 <p className="text-gray-500 dark:text-gray-400">
                   123 Main Street, Anytown USA
                 </p>

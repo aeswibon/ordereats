@@ -9,9 +9,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@c/ui/card";
-import { Input } from "@c/ui/input";
-import { Label } from "@c/ui/label";
-import { RadioGroup, RadioGroupItem } from "@c/ui/radio-group";
 import { Separator } from "@c/ui/separator";
 import {
   Table,
@@ -34,21 +31,24 @@ const Cart = () => {
   });
 
   const total = Number(
-    cart!
-      .reduce((total, item) => {
-        const optionsTotal = item.selected_options.reduce(
-          (optTotal, option) => optTotal + Number(option.surcharge),
-          Number(item.product.base_price)
-        );
-        return total + optionsTotal * item.quantity;
-      }, 0)
-      .toFixed(2)
+    cart?.length &&
+      cart
+        .reduce((total, item) => {
+          const optionsTotal = item.selected_options.reduce(
+            (optTotal, option) => optTotal + Number(option.surcharge),
+            Number(item.product.base_price)
+          );
+          return total + optionsTotal * item.quantity;
+        }, 0)
+        .toFixed(2)
   );
 
   const tax = Number((0.14 * total).toFixed(2));
+  const serviceFee = Number((0.05 * total).toFixed(2));
+  const tip = Number((0.01 * total).toFixed(2));
   const orderMutation = useMutation({
     mutationKey: ["order"],
-    mutationFn: () => order(cart!, total, tax),
+    mutationFn: () => order(total, tax, serviceFee, tip, cart),
     onSuccess: () => {
       toast.success("Order placed successfully");
       queryClient.invalidateQueries({
@@ -83,7 +83,7 @@ const Cart = () => {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {cart.map((item) => (
+                {cart?.map((item) => (
                   <CartItem key={item.id} item={item} />
                 ))}
               </TableBody>
@@ -101,30 +101,6 @@ const Cart = () => {
           <CardHeader>
             <CardTitle>Checkout</CardTitle>
           </CardHeader>
-          <CardContent>
-            <form className="grid gap-6">
-              <div className="grid gap-2">
-                <Label htmlFor="payment">Payment Method</Label>
-                <RadioGroup id="payment" defaultValue="credit">
-                  <div className="flex items-center gap-2">
-                    <RadioGroupItem id="credit" value="credit" />
-                    <Label htmlFor="credit">Credit Card</Label>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <RadioGroupItem id="paypal" value="paypal" />
-                    <Label htmlFor="paypal">PayPal</Label>
-                  </div>
-                </RadioGroup>
-              </div>
-              <div className="grid gap-2">
-                <Label htmlFor="promo">Promo Code</Label>
-                <div className="flex gap-2">
-                  <Input id="promo" placeholder="Enter promo code" />
-                  <Button variant="outline">Apply</Button>
-                </div>
-              </div>
-            </form>
-          </CardContent>
           <CardFooter>
             <div className="grid gap-2 w-full">
               <div className="flex w-full items-center justify-between">
@@ -133,12 +109,20 @@ const Cart = () => {
               </div>
               <div className="flex items-center justify-between">
                 <div>Taxes</div>
-                <div>${(0.14 * total).toFixed(2)}</div>
+                <div>${tax}</div>
+              </div>
+              <div className="flex items-center justify-between">
+                <div>Service Fees</div>
+                <div>${serviceFee}</div>
+              </div>
+              <div className="flex items-center justify-between">
+                <div>Tips</div>
+                <div>${tip}</div>
               </div>
               <Separator />
               <div className="flex items-center justify-between font-medium">
                 <div>Total</div>
-                <div>${total * 1.14}</div>
+                <div>${total + tax + serviceFee + tip}</div>
               </div>
               <Button
                 size="lg"
