@@ -1,8 +1,11 @@
+![Static Badge](https://img.shields.io/badge/vercel-passing-green?style=flat&logo=vercel)
+![Static Badge](https://img.shields.io/badge/render-suspended-yellow?style=flat&logo=render)
+
 # Order Eats
 
 ## Description
 
-Order Eats is a web application that allows users to order food from a restaurant. The application is built using the React and Django. The application allows users to view the menu of a restaurant, add items to their cart, and place an order.
+Order Eats is a web application that allows users to order food from a restaurant. The application is built using Next.js and Django. The application will enable users to view the menu of a restaurant, add items to their cart, and place an order.
 
 ## Features
 
