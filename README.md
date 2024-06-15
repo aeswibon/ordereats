@@ -23,5 +23,6 @@ Order Eats is a web application that allows users to order food from a restauran
 1. Clone the repository
 2. Install the dependencies by running `pnpm install` in the `app` directory and `pipenv install`
 3. Run the Django migrations by running `pipenv run python manage.py migrate`
-4. Start the Django server by running `pipenv run python manage.py runserver`
-5. Start the React server by running `pnpm dev` in the `app` directory
+4. Seed the data by running `pipenv run python manage.py load_data`
+5. Start the Django server by running `pipenv run python manage.py runserver`
+6. Start the React server by running `pnpm dev` in the `app` directory
