@@ -18,3 +18,7 @@ tasks:
     desc: Create a new app
     cmds:
       - python manage.py startapp {{.CLI_ARGS}}
+  build:
+    desc: Build the Docker images
+    cmds:
+      - docker compose build --parallel
