@@ -23,10 +23,18 @@ class ProductSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Product
-        fields = ["id", "name", "base_price", "option_lists"]
+        fields = [
+            "id",
+            "name",
+            "description",
+            "base_price",
+            "option_lists",
+            "image",
+        ]
 
 
 class CartItemSerializer(serializers.ModelSerializer):
+    product = ProductSerializer()
     selected_options = OptionSerializer(many=True)
 
     class Meta:
@@ -43,17 +51,15 @@ class CartSerializer(serializers.ModelSerializer):
 
 
 class OrderSerializer(serializers.ModelSerializer):
-    cart = CartSerializer()
+    items = CartItemSerializer(many=True, source="cart.items")
 
     class Meta:
         model = Order
         fields = [
             "id",
-            "cart",
+            "items",
             "total_price",
             "tax",
-            "service_fee",
-            "tip",
             "created_at",
         ]
 
@@ -61,4 +67,4 @@ class OrderSerializer(serializers.ModelSerializer):
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ["id", "username", "email"]
+        fields = ["id", "username", "email", "password"]

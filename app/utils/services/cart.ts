@@ -6,7 +6,6 @@ export const addToCart = async (
   quantity: number,
   options: IOption[]
 ) => {
-  console.log("Adding to cart", productId, quantity, options);
   await api.post("/cart/add_item/", {
     items: [
       {
@@ -19,7 +18,6 @@ export const addToCart = async (
 };
 
 export const removeFromCart = async (productId: number) => {
-  console.log("Removing from cart", productId);
   await api.post("/cart/remove_item/", {
     items: [productId],
   });
@@ -27,6 +25,5 @@ export const removeFromCart = async (productId: number) => {
 
 export const getCart = async (): Promise<ICartItem[]> => {
   const { data } = await api.get("/cart/get_cart");
-  console.log("Getting cart: ", data.items);
   return data.items;
 };

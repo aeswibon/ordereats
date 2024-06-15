@@ -1,5 +1,6 @@
 "use client";
 
+import { queryClient } from "@a/provider";
 import { Button } from "@c/ui/button";
 import { TableCell, TableRow } from "@c/ui/table";
 import { useMutation } from "@tanstack/react-query";
@@ -23,7 +24,8 @@ const CartItem = (props: CartItemProps) => {
   const removeMutation = useMutation({
     mutationFn: () => removeFromCart(item.product.id),
     onSuccess: () => {
-      toast.success("Removed from cart");
+      toast.success("Removed one quantity from cart");
+      queryClient.invalidateQueries({ queryKey: ["cart"] });
     },
   });
 

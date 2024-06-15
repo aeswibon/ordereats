@@ -11,10 +11,8 @@ const Login = () => {
   const { register, handleSubmit } = useForm();
   const { login } = useAuth();
 
-  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
-    console.log("data from login form", data);
+  const onSubmit: SubmitHandler<FieldValues> = async (data) =>
     await login(data.username, data.password);
-  };
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 items-center h-screen">

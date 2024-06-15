@@ -7,7 +7,7 @@ import React from "react";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-const queryClient = new QueryClient();
+export const queryClient = new QueryClient();
 
 const Provider = ({ children }: { children: React.ReactNode }) => {
   return (
