@@ -9,12 +9,12 @@ import {
   Radio,
   RadioGroup,
 } from "@mui/material";
-import { Option, OptionList } from "@u/types";
+import { IOption, IOptionList } from "@u/types";
 
 interface OptionSelectorProps {
-  optionList: OptionList;
-  selectedOptions: Option[];
-  setSelectedOptions: (options: Option[]) => void;
+  optionList: IOptionList;
+  selectedOptions: IOption[];
+  setSelectedOptions: (options: IOption[]) => void;
 }
 
 const OptionSelector: React.FC<OptionSelectorProps> = ({
@@ -22,7 +22,7 @@ const OptionSelector: React.FC<OptionSelectorProps> = ({
   selectedOptions,
   setSelectedOptions,
 }) => {
-  const handleChange = (option: Option, checked: boolean) => {
+  const handleChange = (option: IOption, checked: boolean) => {
     if (checked) {
       setSelectedOptions([...selectedOptions, option]);
     } else {

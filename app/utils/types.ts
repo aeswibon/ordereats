@@ -21,9 +21,10 @@ export interface IProduct {
 }
 
 export interface ICartItem {
+  id: number;
   product: IProduct;
   quantity: number;
-  options: IOption[];
+  selected_options: IOption[];
 }
 
 export type Response<T> = {

@@ -61,13 +61,22 @@ const NavBar = () => {
           Contact
         </Link>
         {isAuthenticated ? (
-          <Button
-            className="text-sm font-medium hover:underline underline-offset-4"
-            variant="default"
-            onClick={logout}
-          >
-            Logout
-          </Button>
+          <>
+            <Link
+              href="/cart"
+              className="text-sm font-medium hover:underline underline-offset-4"
+              prefetch={false}
+            >
+              Cart
+            </Link>
+            <Button
+              className="text-sm font-medium hover:underline underline-offset-4"
+              variant="default"
+              onClick={logout}
+            >
+              Logout
+            </Button>
+          </>
         ) : (
           <>
             <Link

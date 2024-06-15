@@ -10,9 +10,13 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@c/ui/tooltip";
+import { useMutation } from "@tanstack/react-query";
 import { useAuth } from "@u/context/Auth";
-import { IProduct } from "@u/types";
+import { addToCart } from "@u/services/cart";
+import { IOption, IProduct } from "@u/types";
 import Image from "next/image";
+import { useState } from "react";
+import { toast } from "react-toastify";
 
 interface ProductCardProps {
   product: IProduct;
@@ -21,11 +25,24 @@ interface ProductCardProps {
 const ProductCard = (props: ProductCardProps) => {
   const { isAuthenticated } = useAuth();
   const { product } = props;
+
+  const [radioOption, setRadioOption] = useState({} as IOption);
+  const [selectedOptions, setSelectedOptions] = useState([] as IOption[]);
+  const [quantity, setQuantity] = useState(1);
+
+  const mutation = useMutation({
+    mutationFn: () =>
+      addToCart(product.id, quantity, [...selectedOptions, radioOption]),
+    onSuccess: () => {
+      toast.success("Added to cart");
+    },
+  });
+
   return (
     <div className="flex flex-col bg-white rounded-lg shadow-md overflow-hidden">
       <Image
         src={product.image}
-        alt="Pizza"
+        alt={product.name}
         width={500}
         height={300}
         className="w-full h-64 object-cover"
@@ -36,7 +53,7 @@ const ProductCard = (props: ProductCardProps) => {
         <div className="flex items-center justify-between mb-4">
           <span className="font-bold text-xl">${product.base_price}</span>
         </div>
-        <div className="mb-4">
+        <div className="mb-2">
           {product.option_lists.map((option) => (
             <div key={option.id}>
               <Label htmlFor={option.name} className="block font-medium mb-2">
@@ -45,7 +62,6 @@ const ProductCard = (props: ProductCardProps) => {
               {option.selection_type === "must_select_one" && (
                 <RadioGroup
                   id={option.name}
-                  defaultValue=""
                   className="grid grid-cols-1 md:grid-cols-2 gap-2 pb-4"
                 >
                   {option.options.map((opt) => (
@@ -57,6 +73,7 @@ const ProductCard = (props: ProductCardProps) => {
                       <RadioGroupItem
                         id={`${option.name}-${opt.id}`}
                         value={opt.id.toString()}
+                        onClick={() => setRadioOption(opt)}
                       />
                       {opt.name} (+${opt.surcharge})
                     </Label>
@@ -64,7 +81,7 @@ const ProductCard = (props: ProductCardProps) => {
                 </RadioGroup>
               )}
               {option.selection_type === "can_select_multiple_or_none" && (
-                <div className="flex flex-wrap gap-2 pb-4">
+                <div className="flex flex-wrap gap-2 pb-2">
                   {option.options.map((opt) => (
                     <Label
                       key={opt.id}
@@ -74,6 +91,15 @@ const ProductCard = (props: ProductCardProps) => {
                       <Checkbox
                         id={`${option.name}-${opt.id}`}
                         value={opt.id.toString()}
+                        onCheckedChange={(checked) => {
+                          if (checked) {
+                            setSelectedOptions((prev) => [...prev, opt]);
+                          } else {
+                            setSelectedOptions((prev) =>
+                              prev.filter((item) => item.id !== opt.id)
+                            );
+                          }
+                        }}
                       />
                       {opt.name} (+${opt.surcharge})
                     </Label>
@@ -83,16 +109,33 @@ const ProductCard = (props: ProductCardProps) => {
             </div>
           ))}
         </div>
+        <div className="flex items-center gap-2 pb-4">
+          <span className="block font-medium mb-2">Quantity:</span>
+          <input
+            type="number"
+            min="1"
+            value={quantity}
+            onChange={(e) => setQuantity(parseInt(e.target.value))}
+            className="w-12 h-8 border border-gray-300 rounded-md pl-2"
+          />
+        </div>
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger>
-              <Button size="lg" className="w-full" disabled={!isAuthenticated}>
+              <Button
+                onClick={() => mutation.mutate()}
+                size="lg"
+                className="w-full"
+                disabled={!isAuthenticated}
+              >
                 Add to Cart
               </Button>
             </TooltipTrigger>
-            <TooltipContent>
-              <p>Please login to add it to cart</p>
-            </TooltipContent>
+            {!isAuthenticated && (
+              <TooltipContent>
+                <p>Please login to add it to cart</p>
+              </TooltipContent>
+            )}
           </Tooltip>
         </TooltipProvider>
       </div>
