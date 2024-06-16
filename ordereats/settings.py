@@ -12,15 +12,16 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = (
-    "django-insecure-%ciq1d#s-&gsc6d*-vk!r&_&yo2&*d5q7boc3ouz)kvqoc^55@"
+SECRET_KEY = env.str(
+    "DJANGO_SECRET_KEY",
+    default="django-insecure-%ciq1d#s-&gsc6d*-vk!r&_&yo2&*d5q7boc3ouz)kvqoc^55@",
 )
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = env.bool("DEBUG", default=True)
+DEBUG = env.bool("DJANGO_DEBUG", default=False)
 
 ALLOWED_HOSTS = ["ordereats.onrender.com", "localhost", "ordereats.vercel.app"]
 
+ADMIN_URL = env("DJANGO_ADMIN_URL", default="admin/")
 
 # Application definition
 
