@@ -1,0 +1,16 @@
+[
+  {
+    "model": "orders.cart",
+    "pk": 1,
+    "fields": {
+      "user_id": "1"
+    }
+  },
+  {
+    "model": "orders.cart",
+    "pk": 2,
+    "fields": {
+      "user_id": "2"
+    }
+  }
+]

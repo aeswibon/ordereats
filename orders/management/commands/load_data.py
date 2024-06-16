@@ -16,6 +16,7 @@ class Command(BaseCommand):
             management.call_command(
                 "loaddata",
                 self.BASE_URL + "users.json",
+                self.BASE_URL + "cart.json",
                 self.BASE_URL + "products.json",
                 self.BASE_URL + "optionlists.json",
                 self.BASE_URL + "options.json",
