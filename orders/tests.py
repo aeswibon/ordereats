@@ -1,18 +1,18 @@
+import json
+
 from django.contrib.auth.models import User
-from django.test import TestCase
 from rest_framework import status
-from rest_framework.test import APIClient
+from rest_framework.test import APITestCase
 from rest_framework_simplejwt.tokens import RefreshToken
 
 from orders.models import Cart, CartItem, Option, OptionList, Order, Product
 
 
-class AuthenticatedTestCase(TestCase):
+class AuthenticatedTestCase(APITestCase):
     def setUp(self):
         self.user = User.objects.create_user(
             username="testuser", password="testpass"
         )
-        self.client = APIClient()
         self.refresh = RefreshToken.for_user(self.user)
         self.client.credentials(
             HTTP_AUTHORIZATION=f"Bearer {self.refresh.access_token}"
@@ -39,21 +39,32 @@ class ProductTests(AuthenticatedTestCase):
         self.assertEqual(product_count, 1)
 
     def test_get_product_list(self):
-        response = self.client.get("/api/products/")
+        response = self.client.get("/api/v1/products/")
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.data), 1)
 
     def test_add_to_cart(self):
-        cart = Cart.objects.create(user=self.user)
+        Cart.objects.create(user=self.user)
         response = self.client.post(
-            f"/api/cart/{cart.id}/add_item/",
-            {
-                "product_id": self.product.id,
-                "quantity": 1,
-                "selected_options": [self.option.id],
+            "/api/v1/cart/add_item/",
+            data={
+                "items": [
+                    {
+                        "product": self.product.id,
+                        "quantity": 2,
+                        "selected_options": [
+                            {
+                                "id": self.option.id,
+                                "name": self.option.name,
+                                "surcharge": self.option.surcharge,
+                            }
+                        ],
+                    }
+                ]
             },
+            format="json",
         )
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(CartItem.objects.count(), 1)
 
     def test_order_creation(self):
@@ -63,9 +74,71 @@ class ProductTests(AuthenticatedTestCase):
         )
         cart_item.selected_options.add(self.option)
 
-        response = self.client.post("/api/orders/", {})
+        response = self.client.post(
+            "/api/v1/orders/",
+            data={
+                "items": [
+                    {
+                        "product": {
+                            "name": self.product.name,
+                            "description": self.product.description,
+                            "base_price": self.product.base_price,
+                            "image": self.product.image,
+                            "option_lists": [
+                                {
+                                    "name": self.option_list.name,
+                                    "selection_type": self.option_list.selection_type,
+                                    "options": [
+                                        {
+                                            "name": self.option.name,
+                                            "surcharge": self.option.surcharge,
+                                        }
+                                    ],
+                                }
+                            ],
+                        },
+                        "quantity": 1,
+                        "selected_options": [
+                            {
+                                "id": self.option.id,
+                                "name": self.option.name,
+                                "surcharge": self.option.surcharge,
+                            }
+                        ],
+                    }
+                ],
+                "total_price": 12.00,
+                "tax": 1.68,
+                "service_fee": 0.60,
+                "tip": 0.12,
+            },
+            format="json",
+        )
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(Order.objects.count(), 1)
+
+    def test_list_cart_item(self):
+        cart = Cart.objects.create(user=self.user)
+        cart_item = CartItem.objects.create(
+            cart=cart, product=self.product, quantity=1
+        )
+        cart_item.selected_options.add(self.option)
+        response = self.client.get("/api/v1/cart/get_cart/")
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.data), 2)
+
+    def test_cart_item_deletion(self):
+        cart = Cart.objects.create(user=self.user)
+        cart_item = CartItem.objects.create(
+            cart=cart, product=self.product, quantity=1
+        )
+        cart_item.selected_options.add(self.option)
+
+        response = self.client.post(
+            f"/api/v1/cart/remove_item/", {"items": [cart_item.id]}
+        )
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
+        self.assertEqual(CartItem.objects.count(), 0)
 
 
 class OptionTests(AuthenticatedTestCase):
@@ -137,7 +210,7 @@ class OrderTests(AuthenticatedTestCase):
         self.cart_item.selected_options.add(self.option)
 
     def test_order_creation(self):
-        order = Order.objects.create(
+        Order.objects.create(
             user=self.user,
             cart=self.cart,
             total_price=12.00,
