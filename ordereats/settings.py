@@ -19,7 +19,7 @@ SECRET_KEY = (
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["ordereats.onrender.com", "localhost"]
+ALLOWED_HOSTS = ["ordereats.onrender.com", "localhost", "ordereats.vercel.app"]
 
 
 # Application definition
@@ -51,6 +51,7 @@ MIDDLEWARE = [
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "https://ordereats.onrender.com",
+    "https://ordereats.vercel.app",
 ]
 
 ROOT_URLCONF = "ordereats.urls"

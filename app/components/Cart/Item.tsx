@@ -22,7 +22,7 @@ const CartItem = (props: CartItemProps) => {
   );
 
   const removeMutation = useMutation({
-    mutationFn: () => removeFromCart(item.product.id),
+    mutationFn: () => removeFromCart(item.id),
     onSuccess: () => {
       toast.success("Removed one quantity from cart");
       queryClient.invalidateQueries({ queryKey: ["cart"] });

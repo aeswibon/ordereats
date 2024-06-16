@@ -1,5 +1,6 @@
 from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import User
+from django.db.models import Count
 from drf_spectacular.utils import extend_schema
 from rest_framework import permissions, status, viewsets
 from rest_framework.decorators import action
@@ -35,43 +36,87 @@ class CartViewSet(viewsets.GenericViewSet):
     @extend_schema(summary="Add an item to the cart", tags=["cart"])
     @action(detail=False, methods=["post"])
     def add_item(self, request, pk=None):
-        cart = Cart.objects.get(user=request.user)
-        items = request.data.get("items", [])
-        product = Product.objects.get(id=items[0]["product"])
-        quantity = items[0].get("quantity", 1)
-        selected_options = items[0].get("selected_options", [])
+        data = request.data.get("items", [])
+        if not data:
+            return Response(
+                {"error": "No items provided in request data"},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
 
-        cart_item, created = CartItem.objects.get_or_create(
-            cart=cart, product=product, defaults={"quantity": quantity}
-        )
-        if not created:
-            cart_item.quantity += quantity
+        for item in data:
+            try:
+                product = Product.objects.get(pk=item.get("product"))
+            except Product.DoesNotExist:
+                return Response(
+                    {
+                        "error": "Product with ID {} not found".format(
+                            item.get("product")
+                        )
+                    },
+                    status=status.HTTP_404_NOT_FOUND,
+                )
+
+            quantity = item.get("quantity", 1)
+            selected_options = item.get("selected_options", [])
+
+            cart = Cart.objects.get(user=request.user)
+
+            cart_items = (
+                CartItem.objects.filter(
+                    cart=cart,
+                    product=product,
+                )
+                .annotate(option_count=Count("selected_options"))
+                .filter(option_count=len(selected_options))
+            )
+            if cart_items:
+                for cart in cart_items:
+                    if set(
+                        list(
+                            cart.selected_options.values_list("id", flat=True)
+                        )
+                    ) == set([option["id"] for option in selected_options]):
+                        cart_item = cart
+                        break
+                cart_item.quantity += quantity
+                cart_item.save()
+            cart_item = CartItem.objects.create(
+                cart=cart,
+                product=product,
+                quantity=quantity,
+            )
+            for option in selected_options:
+                cart_item.selected_options.add(option["id"])
             cart_item.save()
-        for option in selected_options:
-            cart_item.selected_options.add(option["id"])
-        cart_item.save()
 
-        return Response(CartItemSerializer(cart_item).data)
+        serializer = CartItemSerializer(cart_item)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
     @extend_schema(summary="Remove an item from the cart", tags=["cart"])
     @action(detail=False, methods=["post"])
     def remove_item(self, request, pk=None):
+        if not request.data.get("items"):
+            return Response(
+                {"error": "No items provided in request data"},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
         cart = Cart.objects.get(user=request.user)
         items = request.data.get("items", [])
-        product = Product.objects.get(id=items[0])
-        cart_item = CartItem.objects.get(cart=cart, product=product)
-        cart_item.quantity -= 1
-        cart_item.save()
-        if cart_item.quantity == 0:
-            cart_item.delete()
+        for item in items:
+            cart_item = CartItem.objects.get(pk=item, cart=cart)
+            if cart_item.quantity > 1:
+                cart_item.quantity -= 1
+                cart_item.save()
+            else:
+                cart_item.delete()
 
-        return Response(CartItemSerializer(cart_item).data)
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
     @extend_schema(summary="Get the cart", tags=["cart"])
     @action(detail=False, methods=["get"])
     def get_cart(self, request):
         cart = Cart.objects.get(user=request.user)
-        return Response(CartSerializer(cart).data)
+        return Response(CartSerializer(cart).data, status=status.HTTP_200_OK)
 
 
 class OrderViewSet(viewsets.GenericViewSet, viewsets.mixins.CreateModelMixin):

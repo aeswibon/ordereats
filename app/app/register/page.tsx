@@ -3,16 +3,42 @@
 import { Button } from "@c/ui/button";
 import { Input } from "@c/ui/input";
 import { Label } from "@c/ui/label";
+import { useMutation } from "@tanstack/react-query";
 import { useAuth } from "@u/context/Auth";
 import Link from "next/link";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
+import { toast } from "react-toastify";
 
 const Register = () => {
   const { register, handleSubmit } = useForm();
   const { register: registerUser } = useAuth();
 
-  const onSubmit: SubmitHandler<FieldValues> = async (data) => {
-    await registerUser(data.email, data.username, data.password);
+  const registerMutation = useMutation({
+    mutationKey: ["register"],
+    mutationFn: (credentials: {
+      email: string;
+      username: string;
+      password: string;
+    }) =>
+      registerUser(
+        credentials.email,
+        credentials.username,
+        credentials.password
+      ),
+    onSuccess: () => {
+      toast.success("Registered successfully");
+    },
+    onError: (error) => {
+      toast.error(error.message);
+    },
+  });
+
+  const onSubmit: SubmitHandler<FieldValues> = (data) => {
+    registerMutation.mutate({
+      email: data.email,
+      username: data.username,
+      password: data.password,
+    });
   };
 
   return (

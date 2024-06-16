@@ -32,7 +32,10 @@ const ProductCard = (props: ProductCardProps) => {
 
   const mutation = useMutation({
     mutationFn: () =>
-      addToCart(product.id, quantity, [...selectedOptions, radioOption]),
+      addToCart(product.id, quantity, [
+        ...selectedOptions,
+        ...(Object.keys(radioOption).length > 0 ? [radioOption] : []),
+      ]),
     onSuccess: () => {
       toast.success("Added to cart");
     },

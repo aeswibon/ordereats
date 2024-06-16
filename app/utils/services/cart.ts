@@ -17,9 +17,9 @@ export const addToCart = async (
   });
 };
 
-export const removeFromCart = async (productId: number) => {
+export const removeFromCart = async (cartItemId: number) => {
   await api.post("/cart/remove_item/", {
-    items: [productId],
+    items: [cartItemId],
   });
 };
 

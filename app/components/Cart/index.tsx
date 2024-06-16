@@ -122,7 +122,7 @@ const Cart = () => {
               <Separator />
               <div className="flex items-center justify-between font-medium">
                 <div>Total</div>
-                <div>${total + tax + serviceFee + tip}</div>
+                <div>${(total + tax + serviceFee + tip).toFixed(2)}</div>
               </div>
               <Button
                 size="lg"

@@ -3,16 +3,31 @@
 import { Button } from "@c/ui/button";
 import { Input } from "@c/ui/input";
 import { Label } from "@c/ui/label";
+import { useMutation } from "@tanstack/react-query";
 import { useAuth } from "@u/context/Auth";
 import Link from "next/link";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
+import { toast } from "react-toastify";
 
 const Login = () => {
   const { register, handleSubmit } = useForm();
   const { login } = useAuth();
 
-  const onSubmit: SubmitHandler<FieldValues> = async (data) =>
-    await login(data.username, data.password);
+  const loginMutation = useMutation({
+    mutationKey: ["login"],
+    mutationFn: (credentials: { username: string; password: string }) =>
+      login(credentials.username, credentials.password),
+    onSuccess: () => {
+      toast.success("Logged in successfully");
+    },
+    onError: (error) => {
+      toast.error(error.message);
+    },
+  });
+
+  const onSubmit: SubmitHandler<FieldValues> = (data) => {
+    loginMutation.mutate({ username: data.username, password: data.password });
+  };
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-3 items-center h-screen">

@@ -3,6 +3,7 @@
 import { login as apiLogin, register as apiRegister } from "@u/services/auth";
 import { useRouter } from "next/navigation";
 import { createContext, useContext, useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
 interface AuthContextProps {
   isAuthenticated: boolean;
@@ -54,6 +55,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     localStorage.removeItem("user");
     setIsAuthenticated(false);
     setUser(null);
+    toast.success("Logged out successfully");
     router.push("/");
   };
 
